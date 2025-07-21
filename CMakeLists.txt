@@ -23,6 +23,7 @@ add_executable(Snake
         src/Food.cpp
         include/Food.hpp
         src/MainMenu.cpp
-        include/MainMenu.hpp)
+        include/MainMenu.hpp
+        include/CellState.hpp)
 
 target_link_libraries(Snake PRIVATE SFML::Graphics)

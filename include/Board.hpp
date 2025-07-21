@@ -3,17 +3,24 @@
 #define SNAKE_BOARD_HPP
 
 #include <SFML/Graphics.hpp>
+#include "CellState.hpp"
 
-#define BOARD_SIZE 20
-#define WINDOW_SIZE 800
+#define BORDER_THICKNESS 2
 
 class Board {
 private:
-    std::array<std::array<int, BOARD_SIZE>, BOARD_SIZE> map;
-    int height, width, cellSize;
+    int size;
+    std::vector<std::vector<CellState>> map;
 public:
-    Board (int height, int width, int cellSize);
-    void render (sf::RenderWindow& window);
+    int cellSize;
+    Board (int size, int boardSize);
+    void render (sf::RenderWindow& window) const;
+    void draw(sf::Vector2i pos, sf::RectangleShape shape, sf::RenderWindow &window) const;
+    void place(sf::Vector2i position, CellState object);
+    void clear(sf::Vector2i position);
+    [[nodiscard]] sf::Vector2f cellToPixel(sf::Vector2i cell) const;
+
+    int boardSize;
 };
 
 
