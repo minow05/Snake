@@ -28,12 +28,12 @@ void Snake::move(Board &board) {
         default:
             break;
     }
-    board.place(body.front(), this->type);
+//    board.place(body.front(), this->type);
 
     // manage food logic
     if (!isFed){
         body.pop_back();
-        board.clear(body.back());
+//        board.clear(body.back());
     }
     isFed = false;
 }
