@@ -8,6 +8,7 @@ void Snake::grow() {
 
 void Snake::move(Board &board) {
     sf::Vector2 head = body.front();
+
     switch (direction) {
         case Direction::right:
             if (head.x + 1 >= board.boardSize) body.emplace_front(0, head.y); // out of bounds scenario
@@ -28,19 +29,18 @@ void Snake::move(Board &board) {
         default:
             break;
     }
-//    board.place(body.front(), this->type);
-
+    board.place(body.front(), type);
     // manage food logic
     if (!isFed){
+        board.clear(body.back());
         body.pop_back();
-//        board.clear(body.back());
     }
     isFed = false;
 }
 
-Snake::Snake(sf::Vector2i startPosition) {
+Snake::Snake(sf::Vector2i startPosition, Board &board) {
     body.emplace_front(startPosition);
-
+    board.place(body.front(), type);
     std::cout << "Snake created\n" << "position: " << startPosition.x << ", " << startPosition.y << "\n";;
 }
 
@@ -54,24 +54,15 @@ void Snake::setDirection(Snake::Direction d) {
     }
 }
 
-//TODO: move to board
-void Snake::render(sf::RenderWindow &window, Board &board) {
-    for (auto& segment : body) {
-        sf::RectangleShape segmentShape(sf::Vector2f(board.cellSize, board.cellSize));
-        segmentShape.setFillColor(sf::Color::Green);
-        board.draw(segment, segmentShape, window);
-    }
-}
-
 bool Snake::checkIfTouch() {
-    sf::Vector2 head = body.front();
-//    if (head.x < 0 || head.x >= board.boardSize || head.y < 0 || head.y >= board.boardSize) {
-//        return true;
-//    }
-    for (auto& segment : body) {
-        if (segment != head && segment.x == head.x || segment.y == head.y) {
+    sf::Vector2i head = body.front();
+    auto it = std::next(body.begin());  // skip first element
+    for (; it != body.end(); ++it) {
+        const auto& segment = *it;
+        if (segment.x == head.x && segment.y == head.y) {
             return true;
         }
     }
     return false;
+
 }

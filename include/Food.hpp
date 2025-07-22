@@ -11,9 +11,10 @@ class Food {
 public:
     const CellState type = CellState::food;
     sf::Vector2i position;
-    bool tryCollect (Snake &snake) const;
-    void render(sf::RenderWindow &window, Board &board) const;
-    explicit Food(sf::Vector2i pos);
+    bool tryCollect (Snake &snake, Board &board) const;
+
+    Food(sf::Vector2i pos, Board &board);
+    explicit Food(Board &board);
     Food& operator=(const Food& other);
 };
 

@@ -11,7 +11,7 @@ class Snake {
 public:
     const CellState type = CellState::snake;
     enum class Direction {right, left, up, down};
-    explicit Snake(sf::Vector2i startPosition);
+    Snake(sf::Vector2i startPosition, Board &board);
 
     std::deque<sf::Vector2i> body;
     bool isFed = false;
@@ -20,8 +20,6 @@ public:
     void move(Board &board);
     void setDirection(Direction d);
     bool checkIfTouch();
-
-    void render (sf::RenderWindow& window, Board &board);
 private:
     Direction direction = Direction::up;
 };

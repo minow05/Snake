@@ -9,13 +9,16 @@
 class Game {
 public:
     Game(Snake &player, Board &level, Food& point);
+    ~Game();
     void run();
 private:
+    bool isRunning;
     Board &level;
     Snake &playerActor;
     Food &point;
     int points = 0;
 
+    void close(sf::RenderWindow &window);
     void processInput(sf::RenderWindow &window);
 };
 
