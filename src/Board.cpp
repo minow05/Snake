@@ -3,6 +3,9 @@
 #include "../include/Board.hpp"
 
 Board::Board(int size, int boardSize) : size(size), boardSize(boardSize) {
+    if (size > 255){
+        throw std::invalid_argument("Board size is too big (size cannot be larger than 255).");
+    }
     cellSize = size / boardSize;
     std::cout << "Board created\nboard size: " << boardSize << "\ncell size: " << cellSize << "\npixel size: " << size << "\n";
     map = std::vector<std::vector<CellState>>(boardSize, std::vector<CellState>(boardSize, CellState::empty));

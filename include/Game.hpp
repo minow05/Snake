@@ -5,7 +5,7 @@
 #include "Food.hpp" // this includes board and snake
 
 #define WINDOW_SIZE 800
-
+// this allows for connection between server and clients
 class Game {
 public:
     Game(Snake &player, Board &level, Food& point);

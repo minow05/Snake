@@ -3,7 +3,7 @@
 
 int main(){
 
-    Board board(WINDOW_SIZE, 2);
+    Board board(WINDOW_SIZE, 4);
     Snake snake({1,  1}, board);
     Food food({1, 0}, board);
 

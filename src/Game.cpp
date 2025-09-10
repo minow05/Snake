@@ -57,9 +57,9 @@ void Game::run() {
 
 Game::~Game() {
     std::cout << "You have scored " << points << " points!\n";
-    delete &playerActor;
-    delete &level;
-    delete &point;
+//    delete &playerActor;
+//    delete &level;
+//    delete &point;
 }
 
 void Game::close(sf::RenderWindow &window) {
