@@ -3,7 +3,7 @@
 #include "../include/Board.hpp"
 
 Board::Board(int size, int boardSize) : size(size), boardSize(boardSize) {
-    if (size > 255){
+    if (boardSize > 255){
         throw std::invalid_argument("Board size is too big (size cannot be larger than 255).");
     }
     cellSize = size / boardSize;
@@ -84,7 +84,6 @@ bool Board::cellIsFree(sf::Vector2i position) {
         throw std::out_of_range("Board out of bounds access.");
     }
     if (map[position.x][position.y] == CellState::empty) {
-        std::cout << "Cell " << position.x << ", " << position.y << " is free\n";
         return true;
     } else {
         return false;

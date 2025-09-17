@@ -1,21 +1,17 @@
 #include <iostream>
+#include <utility>
 #include "../include/Client.hpp"
 
-void Client::sendData(uint8_t packet) {
+void Client::sendData(uint8_t data) {
     auto self = shared_from_this();
-    acceptor.async_accept([self, this](std::error_code ec, asio::ip::tcp::socket socket) {
+    asio::async_write(socket, asio::buffer(&data, sizeof(data)), [this, self, &data](std::error_code ec, std::size_t length) {
         if (!ec) {
-            auto session = std::make_shared<Session>(std::move(socket));
-            self->sessions.push_back(session);
-            session->start();
-            std::cout << "Player connected\n";
+            std::cout << "Sent " << data << " bytes\n";
         }
-        self->accept();
     });
 }
 
-Client::Client(asio::io_context &io, const std::string &host, uint16_t port) : io(io),  {
-
+Client::Client() : socket(io), resolver(io) {
 }
 
 void Client::start() {
@@ -31,18 +27,26 @@ void Client::start() {
            });
        }
     });
+    io.run();
 }
 
 void Client::read() {
     auto self = shared_from_this();
-    socket.async_read_some(asio::buffer(buffer),[this, self](std::error_code ec, std::size_t length) {
+    asio::async_read(socket, asio::buffer(&packet, 1), [self](std::error_code ec, std::size_t packet) {
         if (!ec) {
-            std::cout << "Received: ";
-            for (size_t i = 0; i < length; i++) {
-                std::cout << int(buffer[i]) << " ";
-            }
-            std::cout << "\n";
-            read();
+            std::cout << "Received: " << packet << "\n";
+            self->read();
+        } else {
+            std::cerr << "Read error: " << ec.message() << "\n";
         }
     });
 }
+
+void Client::setHost(std::string h) {
+    host = h;
+}
+
+void Client::setPort(uint16_t p) {
+    port = p;
+}
+

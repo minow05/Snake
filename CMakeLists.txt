@@ -21,6 +21,8 @@ FetchContent_Declare(ASIO
 )
 FetchContent_MakeAvailable(ASIO)
 
+
+
 add_executable(Snake
         src/main.cpp
         src/Snake.cpp
@@ -41,8 +43,13 @@ add_executable(Snake
         src/Session.cpp
         include/Session.hpp)
 
+
+
+
 target_link_libraries(Snake PRIVATE SFML::Graphics)
 
 target_include_directories(Snake PRIVATE
         ${asio_SOURCE_DIR}/asio/include
 )
+
+target_link_libraries(Snake PRIVATE ws2_32 mswsock)

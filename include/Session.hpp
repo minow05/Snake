@@ -7,13 +7,13 @@
 class Session : std::enable_shared_from_this<Session>{
 private:
     asio::ip::tcp::resolver resolver;
-    std::list<uint16_t> listOfPorts;
+    uint8_t packet;
     asio::ip::tcp::socket socket;
     void readPlayerInput();
-    void writeGameState();
 
 public:
-    explicit Session(asio::ip::tcp::socket socket);
+    void writeGameState(uint8_t gameState);
+    explicit Session(asio::io_context& io);
     void start();
 };
 

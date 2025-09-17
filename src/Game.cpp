@@ -2,7 +2,58 @@
 #include <iostream>
 #include "../include/Game.hpp"
 
-Game::Game(Snake &player, Board &level, Food &point) : playerActor(player), level(level), point(point) {}
+Game::Game(Snake &player, Board &level, Food &point) : playerActor(player), level(level), point(point), menu(*this) {
+}
+
+Game::~Game() {
+    std::cout << "You have scored " << points << " points!\n";
+//    delete &playerActor;
+//    delete &level;
+//    delete &point;
+}
+
+void Game::close(sf::RenderWindow &window) {
+    isRunning = false;
+    window.close();
+}
+
+void Game::runSinglePlayer() {
+    auto window = this->createWindow();
+    this->isRunning = true;
+    this->points = 0;
+    while (this->isRunning) {
+        this->processInput(window);
+        this->handleLogic(window);
+        this->render(window);
+    }
+}
+
+void Game::runClient() {
+    Client client;
+    menu.connectToHostUI(client);
+    //TODO: finish this
+}
+
+void Game::runHost() {
+    Server server(2);
+    menu.createHostUI(server);
+    //TODO: finish this
+}
+
+sf::RenderWindow Game::createWindow() {
+    sf::RenderWindow window(sf::VideoMode({WINDOW_SIZE, WINDOW_SIZE}), "Snake Game");
+
+    sf::View cartesianView;
+
+    cartesianView.setCenter({WINDOW_SIZE/2, WINDOW_SIZE/2});
+    cartesianView.setSize({WINDOW_SIZE, -WINDOW_SIZE});
+
+    window.setView(cartesianView);
+
+    window.setFramerateLimit(3);
+
+    return window;
+}
 
 void Game::processInput(sf::RenderWindow &window) {
     while (const std::optional event = window.pollEvent()) {
@@ -20,50 +71,20 @@ void Game::processInput(sf::RenderWindow &window) {
     }
 }
 
-void Game::run() {
-    sf::RenderWindow window(sf::VideoMode({WINDOW_SIZE, WINDOW_SIZE}), "Snake Game");
-
-    sf::View cartesianView;
-
-    cartesianView.setCenter({WINDOW_SIZE/2, WINDOW_SIZE/2});
-    cartesianView.setSize({WINDOW_SIZE, -WINDOW_SIZE});
-
-    window.setView(cartesianView);
-
-    window.setFramerateLimit(3);
-
-    while (this->isRunning) {
-        //handle input
-        this->processInput(window);
-
-        //handle logic
-        if (playerActor.checkIfTouch()){
-            this->close(window);
-            break;
-        }
-        if (point.tryCollect(playerActor, level)){
-            point = Food(level);
-            points++;
-        }
-        playerActor.move(level);
-
-        //render
-        window.clear(sf::Color::White);
-        level.render(window);
-
-        window.display();
+void Game::handleLogic(sf::RenderWindow &window) {
+    if (playerActor.checkIfTouch()){
+        this->close(window);
     }
+    if (point.tryCollect(playerActor, level)){
+        point = Food(level);
+        points++;
+    }
+    playerActor.move(level);
 }
 
-Game::~Game() {
-    std::cout << "You have scored " << points << " points!\n";
-//    delete &playerActor;
-//    delete &level;
-//    delete &point;
-}
+void Game::render(sf::RenderWindow &window) {
+    window.clear(sf::Color::White);
+    level.render(window);
 
-void Game::close(sf::RenderWindow &window) {
-    isRunning = false;
-    window.close();
-//    delete this; WHY DOES IT INDUCE STATUS_HEAP_CORRUPTION???
+    window.display();
 }

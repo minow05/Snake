@@ -8,17 +8,20 @@
 
 class Client : std::enable_shared_from_this<Client> {
 public:
-    Client(asio::io_context& io, const std::string& host, uint16_t port);
+    Client();
     void start();
-    void sendData(uint8_t packet);
+    void sendData(uint8_t data);
+    void setHost(std::string h);
+    void setPort(uint16_t p);
 private:
-    asio::io_context& io;
+    asio::io_context io;
     asio::ip::tcp::resolver resolver;
     asio::ip::tcp::socket socket;
     std::string host;
     uint16_t port;
-    std::array<uint8_t, 128> buffer{};
+    uint8_t packet;
     void read();
+    void handlePacket(uint8_t p);
 };
 
 

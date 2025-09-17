@@ -2,7 +2,6 @@ Hello, this is my first "major" project in C++ non-related to academic work
 It is supposed to be a Snake Game copy with possibility of playing in multiplayer
 
 /* GENERAL TODO:
-* Add Main Menu
 * Add functionality for playing via network
 * Add ability to modify colours (maybe adding textures, more advanced visuals)
 * Make gameplay non-dependent on refresh rate
