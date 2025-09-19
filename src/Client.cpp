@@ -32,7 +32,7 @@ void Client::start() {
 
 void Client::read() {
     auto self = shared_from_this();
-    asio::async_read(socket, asio::buffer(&packet, 1), [self](std::error_code ec, std::size_t packet) {
+    asio::async_read(socket, asio::buffer(&buffer, 1), [self](std::error_code ec, std::size_t packet) {
         if (!ec) {
             std::cout << "Received: " << packet << "\n";
             self->read();

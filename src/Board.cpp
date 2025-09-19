@@ -108,3 +108,43 @@ void Board::printDebug() {
         std::cout << "\n";
     }
 }
+
+Board::Board() {}
+
+void Board::snakeMove(Snake &snake) {
+    sf::Vector2 head = snake.body.front();
+
+    switch (snake.direction) {
+        case Snake::Direction::right:
+            if (head.x + 1 >= this->boardSize) snake.body.emplace_front(0, head.y); // out of bounds scenario
+            else snake.body.emplace_front(head.x + 1, head.y);
+            break;
+        case Snake::Direction::left:
+            if (head.x - 1 < 0) snake.body.emplace_front(this->boardSize - 1, head.y);
+            else snake.body.emplace_front(head.x - 1, head.y);
+            break;
+        case Snake::Direction::up:
+            if (head.y + 1 >= this->boardSize) snake.body.emplace_front(head.x, 0);
+            else snake.body.emplace_front(head.x, head.y + 1);
+            break;
+        case Snake::Direction::down:
+            if (head.y - 1 < 0) snake.body.emplace_front(head.x, this->boardSize - 1);
+            else snake.body.emplace_front(head.x, head.y - 1);
+            break;
+        default:
+            break;
+    }
+    this->place(snake.body.front(), snake.type);
+    // manage food logic
+    if (!snake.isFed){
+        this->clear(snake.body.back());
+        snake.body.pop_back();
+    }
+    snake.isFed = false;
+}
+
+void Board::snakeEmplace(Snake &snake, sf::Vector2i startPosition) {
+    snake.body.emplace_front(startPosition);
+    this->place(snake.body.front(), snake.type);
+    std::cout << "Snake created\n" << "position: " << startPosition.x << ", " << startPosition.y << "\n";;
+}

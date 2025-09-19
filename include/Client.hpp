@@ -3,6 +3,7 @@
 #define SNAKE_CLIENT_HPP
 
 #include "asio.hpp"
+#include "CellState.hpp"
 
 //this(Snake) sends movement input to Server (Board)
 
@@ -19,9 +20,9 @@ private:
     asio::ip::tcp::socket socket;
     std::string host;
     uint16_t port;
-    uint8_t packet;
-    void read();
+    std::vector<std::vector<CellState>> buffer;
     void handlePacket(uint8_t p);
+    void read();
 };
 
 

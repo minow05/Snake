@@ -4,6 +4,7 @@
 #include "../include/Game.hpp"
 
 MainMenu::MainMenu(Game &gameInstance){
+    window.create(sf::VideoMode({WINDOW_SIZE, WINDOW_SIZE}), "Menu");
     if (!font.openFromFile("../assets/Pixeled.ttf")){
         std::cout << "Failed to load font" << std::endl;
     }
@@ -12,7 +13,6 @@ MainMenu::MainMenu(Game &gameInstance){
 
 
 void MainMenu::run(Game &gameInstance) {
-    sf::RenderWindow window(sf::VideoMode({WINDOW_SIZE, WINDOW_SIZE}), "Menu");
     std::vector<std::string> items = {"SINGLE_PLAYER", "HOST_GAME", "JOIN_GAME", "EXIT"};
     int selectedIndex = 0;
     while (window.isOpen()) {
@@ -54,11 +54,17 @@ void MainMenu::run(Game &gameInstance) {
     }
 }
 
+
+
 void MainMenu::connectToHostUI(Client &client) {
     //TODO: finish this
 }
 
 void MainMenu::createHostUI(Server& host){
     //TODO: finish this
+}
+
+void MainMenu::createSinglePlayer(Game &gameInstance) {
+
 }
 

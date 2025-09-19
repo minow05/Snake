@@ -7,25 +7,27 @@
 #include "MainMenu.hpp"
 
 #define WINDOW_SIZE 800
-// this allows for connection between server and clients
 
 class Game {
 public:
-    Game(Snake &player, Board &level, Food& point);
+    Game(Snake player, Board level, Food point);
+    Game();
     ~Game();
     void runSinglePlayer();
     void runClient();
     void runHost();
 private:
 
-    Board &level;
-    Snake &playerActor;
-    Food &point;
+    Board level;
+    Snake playerActor;
+    Food point;
     MainMenu menu;
     int points = 0;
     bool isRunning;
 
-
+    void buildActor();
+    void buildLevel(int boardSize);
+    void buildPoint(Board& board);
 
     sf::RenderWindow createWindow();
     void close(sf::RenderWindow &window);

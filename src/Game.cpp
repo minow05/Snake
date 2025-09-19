@@ -2,8 +2,11 @@
 #include <iostream>
 #include "../include/Game.hpp"
 
-Game::Game(Snake &player, Board &level, Food &point) : playerActor(player), level(level), point(point), menu(*this) {
+Game::Game(Snake player, Board level, Food point) : playerActor(std::move(player)), level(std::move(level)), point(std::move(point)), menu(*this) {
+
 }
+
+Game::Game() : menu(*this) {}
 
 Game::~Game() {
     std::cout << "You have scored " << points << " points!\n";
@@ -18,6 +21,10 @@ void Game::close(sf::RenderWindow &window) {
 }
 
 void Game::runSinglePlayer() {
+    menu.createSinglePlayer(*this);
+    buildLevel(15);
+    buildActor();
+    buildPoint(level);
     auto window = this->createWindow();
     this->isRunning = true;
     this->points = 0;
@@ -50,7 +57,7 @@ sf::RenderWindow Game::createWindow() {
 
     window.setView(cartesianView);
 
-    window.setFramerateLimit(3);
+    window.setFramerateLimit(8);
 
     return window;
 }
@@ -79,7 +86,7 @@ void Game::handleLogic(sf::RenderWindow &window) {
         point = Food(level);
         points++;
     }
-    playerActor.move(level);
+    level.snakeMove(playerActor);
 }
 
 void Game::render(sf::RenderWindow &window) {
@@ -88,3 +95,19 @@ void Game::render(sf::RenderWindow &window) {
 
     window.display();
 }
+
+void Game::buildLevel(int boardSize) {
+    level = Board(WINDOW_SIZE, boardSize);
+}
+
+void Game::buildActor() {
+    level.snakeEmplace(playerActor, {level.boardSize/2, level.boardSize/2});
+}
+
+void Game::buildPoint(Board& board) {
+    point = Food(board);
+}
+
+
+
+

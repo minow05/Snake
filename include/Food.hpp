@@ -14,6 +14,7 @@ public:
     bool tryCollect (Snake &snake, Board &board) const;
 
     Food(sf::Vector2i pos, Board &board);
+    Food();
     explicit Food(Board &board);
     Food& operator=(const Food& other);
 };

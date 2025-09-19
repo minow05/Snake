@@ -30,4 +30,6 @@ Food::Food(Board &board) {
     board.place(position, type);
 }
 
+Food::Food() {}
+
 

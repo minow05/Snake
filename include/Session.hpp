@@ -10,7 +10,7 @@ private:
     uint8_t packet;
     asio::ip::tcp::socket socket;
     void readPlayerInput();
-
+    void handlePacket(uint8_t p);
 public:
     void writeGameState(uint8_t gameState);
     explicit Session(asio::io_context& io);

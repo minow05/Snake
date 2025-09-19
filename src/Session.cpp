@@ -7,6 +7,7 @@ void Session::readPlayerInput() {
     asio::async_read(socket, asio::buffer(&packet, 1), [self](std::error_code ec, std::size_t packet) {
         if (!ec) {
             std::cout << "Received: " << packet << "\n";
+            self->handlePacket(packet);
             self->readPlayerInput();
         } else {
             std::cerr << "Read error: " << ec.message() << "\n";
@@ -29,4 +30,8 @@ Session::Session(asio::io_context& io) : resolver(io), socket(io){
 
 void Session::start() {
     readPlayerInput();
+}
+
+void Session::handlePacket(uint8_t p) {
+
 }

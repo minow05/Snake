@@ -12,9 +12,11 @@ class Game;
 class MainMenu {
 private:
     sf::Font font;
+    sf::RenderWindow window;
     void run(Game &gameInstance);
 public:
     explicit MainMenu(Game &gameInstance);
+    void createSinglePlayer(Game& gameInstance);
     void createHostUI(Server& host);
     void connectToHostUI(Client& client);
 
