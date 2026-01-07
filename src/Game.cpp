@@ -79,14 +79,15 @@ void Game::processInput(sf::RenderWindow &window) {
 }
 
 void Game::handleLogic(sf::RenderWindow &window) {
+
     if (playerActor.checkIfTouch()){
         this->close(window);
     }
-    if (point.tryCollect(playerActor, level)){
+    if (point.tryCollect(playerActor, level)){ //Board.food.checkIf()
         point = Food(level);
         points++;
     }
-    level.snakeMove(playerActor);
+    level.snakeMove(playerActor); //Board.snake.move()
 }
 
 void Game::render(sf::RenderWindow &window) {
@@ -101,11 +102,13 @@ void Game::buildLevel(int boardSize) {
 }
 
 void Game::buildActor() {
-    level.snakeEmplace(playerActor, {level.boardSize/2, level.boardSize/2});
+//    level.players.push_back(this->playerActor);
+    level.snakeEmplace(playerActor, sf::Vector2i(level.boardSize/2, level.boardSize/2));
 }
 
 void Game::buildPoint(Board& board) {
     point = Food(board);
+//    level.point.push_back(&point);
 }
 
 

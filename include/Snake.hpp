@@ -5,6 +5,7 @@
 #include <deque>
 #include <SFML/Graphics.hpp>
 #include "CellState.hpp"
+#include "Board.hpp"
 
 class Snake {
 public:
@@ -16,6 +17,7 @@ public:
     bool isFed = false;
 
     void grow();
+    void move(Board& board); //implement based on Board.snakeMove(Snake&);
     void setDirection(Direction d);
     bool checkIfTouch();
 
